@@ -23,7 +23,7 @@ apt_install pulseaudio-utils bluez
 echo "Restarting bluetooth driver 🧢"
 systemctl restart bluetooth
 
-sleep 2
+sleep 3
 
 # Replace with desired mac adress
 mac_adress=30:50:75:48:76:CC
@@ -34,9 +34,9 @@ echo "connect ${mac_adress}" | bluetoothctl > /dev/null
 ## Check if headset is in list of connected bluetooth devices
 # pactl uses underscore instead of colon in mac adress
 regex="([0-9]+)\s[a-z_]+.${mac_adress//:/_}"
+echo "Waiting for headset to reconnect... 🔌"
 while [[ ! $(pactl list cards short) =~ $regex ]]; do
-    echo "Waiting for headset to reconnect... 🔌"
-    sleep 5
+	sleep 1
 done
 
 sleep 3
