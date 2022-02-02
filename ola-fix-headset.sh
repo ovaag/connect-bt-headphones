@@ -2,6 +2,24 @@
 
 set -e
 
+
+# Install dependencies or do nothing if already installed
+#
+# Useful to quickly continue without sudo password prompt when
+# nothing needs to be installed.
+apt_install() {
+    for package in "$@"
+    do
+        # https://askubuntu.com/a/423555/313644
+        if ! dpkg -s "$package" &> /dev/null
+        then
+            sudo apt-get install -qq "$package"
+        fi
+    done
+}
+
+apt_install pulseaudio-utils bluez
+
 echo "Restarting bluetooth driver 🧢"
 systemctl restart bluetooth
 
